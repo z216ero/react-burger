@@ -1,0 +1,26 @@
+.header {
+    max-width: 1920px;
+    background-color: #1C1C21;
+    margin: 40px auto;
+}
+
+.menu {
+    box-sizing: border-box;
+    padding: 16px 0;
+    height: 88px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 340px;
+}
+
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.purple {
+    color: #8585AD;
+}

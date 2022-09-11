@@ -1,0 +1,23 @@
+.App {
+  background-color: #131316;
+  height: 100vh;
+}
+
+.Content {
+  width: 1920px;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
