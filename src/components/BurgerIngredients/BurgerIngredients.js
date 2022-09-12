@@ -6,7 +6,9 @@ import { data } from '../../utils/data';
 export default function BurgerIngredients() {
 
     const [current, setCurrent] = useState("bread")
-
+    const buns = data.filter(item => item.type === "bun");
+    const sause = data.filter(item => item.type === "sauce");
+    const main = data.filter(item => item.type === "main");
     return (
         <>
             <div className={Style.burgerIngredients}>
@@ -23,51 +25,45 @@ export default function BurgerIngredients() {
                     <li className={Style.ingridientCategory}>
                         <p className={`${Style.ingridientCategoryName}  mb-6`}>Булки</p>
                         <ul className={`${Style.flRW} ml-4`} >
-                            {data.map((item) => {
-                                if (item.type === "bun") {
-                                    return (<li key={item._id} className={Style.ingridientCard}>
-                                        {item.__v > 0 && (<div className={Style.Count}>
-                                            <Counter count={item.__v}></Counter>
-                                        </div>)}
-                                        <img className={Style.ingridientPoto} alt="Фото ингридента" src={item.image}></img>
-                                        <div className={Style.ingridientCost}>{item.price} <CurrencyIcon type="primary" /> </div>
-                                        <p className={Style.ingridientName}>{item.name}</p>
-                                    </li>)
-                                }
+                            {buns.map((item) => {
+                                return (<li key={item._id} className={Style.ingridientCard}>
+                                    <div className={Style.Count}>
+                                        <Counter count={1}></Counter>
+                                    </div>
+                                    <img className={Style.ingridientPoto} alt="Фото ингридента" src={item.image}></img>
+                                    <div className={Style.ingridientCost}>{item.price} <CurrencyIcon type="primary" /> </div>
+                                    <p className={Style.ingridientName}>{item.name}</p>
+                                </li>)
                             })}
                         </ul>
                     </li>
                     <li className={Style.ingridientCategory}>
                         <p className={`${Style.ingridientCategoryName}  mb-6`}>Соусы</p>
                         <ul className={`${Style.flRW} ml-4`} >
-                            {data.map((item) => {
-                                if (item.type === "sauce") {
-                                    return (<li key={item._id} className={Style.ingridientCard}>
-                                        {item.__v > 0 && (<div className={Style.Count}>
-                                            <Counter count={item.__v}></Counter>
-                                        </div>)}
-                                        <img className={Style.ingridientPoto} alt="Фото ингридента" src={item.image}></img>
-                                        <div className={Style.ingridientCost}>{item.price} <CurrencyIcon type="primary" /> </div>
-                                        <p className={Style.ingridientName}>{item.name}</p>
-                                    </li>)
-                                }
+                            {sause.map((item) => {
+                                return (<li key={item._id} className={Style.ingridientCard}>
+                                    <div className={Style.Count}>
+                                        <Counter count={1}></Counter>
+                                    </div>
+                                    <img className={Style.ingridientPoto} alt="Фото ингридента" src={item.image}></img>
+                                    <div className={Style.ingridientCost}>{item.price} <CurrencyIcon type="primary" /> </div>
+                                    <p className={Style.ingridientName}>{item.name}</p>
+                                </li>)
                             })}
                         </ul>
                     </li>
                     <li className={Style.ingridientCategory}>
                         <p className={`${Style.ingridientCategoryName}  mb-6`}>Начинки</p>
                         <ul className={`${Style.flRW} ml-4`} >
-                            {data.map((item) => {
-                                if (item.type === "main") {
-                                    return (<li key={item._id} className={Style.ingridientCard}>
-                                        {item.__v > 0 && (<div className={Style.Count}>
-                                            <Counter count={item.__v}></Counter>
-                                        </div>)}
-                                        <img className={Style.ingridientPoto} alt="Фото ингридента" src={item.image}></img>
-                                        <div className={Style.ingridientCost}>{item.price} <CurrencyIcon type="primary" /> </div>
-                                        <p className={Style.ingridientName}>{item.name}</p>
-                                    </li>)
-                                }
+                            {main.map((item) => {
+                                return (<li key={item._id} className={Style.ingridientCard}>
+                                    <div className={Style.Count}>
+                                        <Counter count={1}></Counter>
+                                    </div>
+                                    <img className={Style.ingridientPoto} alt="Фото ингридента" src={item.image}></img>
+                                    <div className={Style.ingridientCost}>{item.price} <CurrencyIcon type="primary" /> </div>
+                                    <p className={Style.ingridientName}>{item.name}</p>
+                                </li>)
                             })}
                         </ul>
                     </li>

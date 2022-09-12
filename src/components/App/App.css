@@ -4,7 +4,7 @@
 }
 
 .Content {
-  width: 1920px;
+  max-width: 1920px;
   display: flex;
   justify-content: center;
   margin: 0 auto;

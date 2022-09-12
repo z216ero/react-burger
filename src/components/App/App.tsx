@@ -5,13 +5,13 @@ import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 
 function App() {
   return (
-    <div className="App">
+    <main className="App">
       <AppHeader />
       <div className={"Content"}>
         <BurgerIngredients />
         <BurgerConstructor />
       </div>
-    </div>
+    </main>
   );
 }
 
