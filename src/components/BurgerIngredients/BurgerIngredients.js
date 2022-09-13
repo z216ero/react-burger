@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import Style from './BurgerIngredients.module.css';
 import { CurrencyIcon, Tab, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { data } from '../../utils/data';
 
-export default function BurgerIngredients() {
+export default function BurgerIngredients(props) {
 
-    const [current, setCurrent] = useState("bread")
-    const buns = data.filter(item => item.type === "bun");
-    const sause = data.filter(item => item.type === "sauce");
-    const main = data.filter(item => item.type === "main");
+    const [current, setCurrent] = useState("bread");
+    var test = Array.from(props.ingridients);
+    console.log(test);
+    const buns = test.filter(item => item.type === "bun");
+    const sause = test.filter(item => item.type === "sauce");
+    const main = test.filter(item => item.type === "main");
     return (
         <>
             <div className={Style.burgerIngredients}>
