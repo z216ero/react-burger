@@ -1,11 +1,13 @@
-import { data } from '../../utils/data';
 import Style from './BurgerConstructor.module.css';
 import { Button, ConstructorElement, DragIcon, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import OrderDetails from '../OrderDetails/OrderDetails';
+import PropTypes from 'prop-types';
 
-export default function BurgerConstructor() {
+export default function BurgerConstructor(props) {
+  const ingridients = Array.from(props.ingridients);
   return (
     <div className={`${Style.burgerConstructor} mt-25`} >
-      <ul className={Style.ingridients}>
+      {ingridients.length > 0 && <ul className={Style.ingridients}>
         <li className={Style.ingridient}>
           <div className={Style.dragble}></div>
           <ConstructorElement
@@ -13,7 +15,7 @@ export default function BurgerConstructor() {
             isLocked={true}
             text="Краторная булка N-200i (верх)"
             price={20}
-            thumbnail={data[0].image}
+            thumbnail={ingridients[0].image}
           />
         </li>
         <li className={Style.ingridient}>
@@ -23,7 +25,7 @@ export default function BurgerConstructor() {
           <ConstructorElement
             text="Соус традиционный галактический"
             price={30}
-            thumbnail={data[0].image}
+            thumbnail={ingridients[0].image}
           />
         </li>
         <li className={Style.ingridient}>
@@ -33,7 +35,7 @@ export default function BurgerConstructor() {
           <ConstructorElement
             text="Мясо бессмертных моллюсков Protostomia"
             price={300}
-            thumbnail={data[0].image}
+            thumbnail={ingridients[0].image}
           />
         </li>
         <li className={Style.ingridient}>
@@ -43,7 +45,7 @@ export default function BurgerConstructor() {
           <ConstructorElement
             text="Плоды Фалленианского дерева"
             price={80}
-            thumbnail={data[0].image}
+            thumbnail={ingridients[0].image}
           />
         </li>
         <li className={Style.ingridient}>
@@ -53,7 +55,7 @@ export default function BurgerConstructor() {
           <ConstructorElement
             text="Хрустящие минеральные кольца"
             price={80}
-            thumbnail={data[0].image}
+            thumbnail={ingridients[0].image}
           />
         </li>
         <li className={Style.ingridient}>
@@ -63,7 +65,7 @@ export default function BurgerConstructor() {
           <ConstructorElement
             text="Хрустящие минеральные кольца"
             price={80}
-            thumbnail={data[0].image}
+            thumbnail={ingridients[0].image}
           />
         </li>
         <li className={Style.ingridient}>
@@ -73,18 +75,27 @@ export default function BurgerConstructor() {
             isLocked={true}
             text="Краторная булка N-200i (низ)"
             price={200}
-            thumbnail={data[0].image}
+            thumbnail={ingridients[0].image}
           />
         </li>
-      </ul>
+      </ul>}
       <div className={`${Style.orderContainer} mt-10`}>
         <div className={Style.totalPrice}>
           <p className="text text_type_digits-medium">610</p>
           <CurrencyIcon type="primary" style={{ heith: '33px', withd: '33px' }} /></div>
-        <Button type="primary" size="large">
+        <Button type="primary" size="large" onClick={() => {
+          props.onClick();
+          props.setContent(<OrderDetails />);
+        }}>
           Оформить заказ
         </Button>
       </div>
     </div>
   )
+}
+
+BurgerConstructor.propTypes = {
+  ingridients: PropTypes.array,
+  onClick: PropTypes.func,
+  setContent: PropTypes.func
 }

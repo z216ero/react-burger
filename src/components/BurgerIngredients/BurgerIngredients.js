@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
 import Style from './BurgerIngredients.module.css';
 import { CurrencyIcon, Tab, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import PropTypes from 'prop-types';
 
 export default function BurgerIngredients(props) {
-
     const [current, setCurrent] = useState("bread");
-    var test = Array.from(props.ingridients);
-    console.log(test);
-    const buns = test.filter(item => item.type === "bun");
-    const sause = test.filter(item => item.type === "sauce");
-    const main = test.filter(item => item.type === "main");
+    const ingridients = Array.from(props.ingridients);
+    const buns = ingridients.filter(item => item.type === "bun");
+    const sause = ingridients.filter(item => item.type === "sauce");
+    const main = ingridients.filter(item => item.type === "main");
     return (
         <>
             <div className={Style.burgerIngredients}>
                 <p className={`${Style.title} mt-10 mb-5`}>Соберите бургер</p>
-
                 <nav className={"mb-10"} >
                     <ul className={`${Style.flR}`}>
                         <li><Tab active={current === "bread"} onClick={setCurrent} value={"bread"}>Булки</Tab> </li>
@@ -27,7 +26,10 @@ export default function BurgerIngredients(props) {
                         <p className={`${Style.ingridientCategoryName}  mb-6`}>Булки</p>
                         <ul className={`${Style.flRW} ml-4`} >
                             {buns.map((item) => {
-                                return (<li key={item._id} className={Style.ingridientCard}>
+                                return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
+                                    props.onClick();
+                                    props.setContent(<IngredientDetails ingridient={item} />)
+                                }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
                                     </div>
@@ -42,7 +44,10 @@ export default function BurgerIngredients(props) {
                         <p className={`${Style.ingridientCategoryName}  mb-6`}>Соусы</p>
                         <ul className={`${Style.flRW} ml-4`} >
                             {sause.map((item) => {
-                                return (<li key={item._id} className={Style.ingridientCard}>
+                                return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
+                                    props.onClick();
+                                    props.setContent(<IngredientDetails ingridient={item} />)
+                                }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
                                     </div>
@@ -57,7 +62,10 @@ export default function BurgerIngredients(props) {
                         <p className={`${Style.ingridientCategoryName}  mb-6`}>Начинки</p>
                         <ul className={`${Style.flRW} ml-4`} >
                             {main.map((item) => {
-                                return (<li key={item._id} className={Style.ingridientCard}>
+                                return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
+                                    props.onClick();
+                                    props.setContent(<IngredientDetails ingridient={item} />)
+                                }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
                                     </div>
@@ -72,4 +80,10 @@ export default function BurgerIngredients(props) {
             </div>
         </>
     )
+}
+
+BurgerIngredients.propTypes = {
+    ingridients: PropTypes.array,
+    onClick: PropTypes.func,
+    setContent: PropTypes.func
 }

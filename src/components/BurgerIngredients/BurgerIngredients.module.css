@@ -57,6 +57,10 @@
     position: relative;
 }
 
+.ingridientCard:hover{
+    cursor: pointer;
+}
+
 .count {
     position: absolute;
     top: 0;
