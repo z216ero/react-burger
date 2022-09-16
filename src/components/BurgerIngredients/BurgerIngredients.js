@@ -3,15 +3,23 @@ import Style from './BurgerIngredients.module.css';
 import { CurrencyIcon, Tab, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import PropTypes from 'prop-types';
+import Modal from '../Modal/Modal';
 
 export default function BurgerIngredients(props) {
     const [current, setCurrent] = useState("bread");
-    const ingridients = Array.from(props.ingridients);
+    const { ingridients } = props;
+    const [currentItem, setCurrentItem] = useState();
     const buns = ingridients.filter(item => item.type === "bun");
     const sause = ingridients.filter(item => item.type === "sauce");
     const main = ingridients.filter(item => item.type === "main");
+
+    const Close = () => {
+        setCurrentItem(null);
+    }
+
     return (
         <>
+            {currentItem && (<Modal onClose={Close} children={(<IngredientDetails ingridient={currentItem} />)} />)}
             <div className={Style.burgerIngredients}>
                 <p className={`${Style.title} mt-10 mb-5`}>Соберите бургер</p>
                 <nav className={"mb-10"} >
@@ -27,8 +35,7 @@ export default function BurgerIngredients(props) {
                         <ul className={`${Style.flRW} ml-4`} >
                             {buns.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
-                                    props.onClick();
-                                    props.setContent(<IngredientDetails ingridient={item} />)
+                                    setCurrentItem(item);
                                 }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
@@ -45,8 +52,7 @@ export default function BurgerIngredients(props) {
                         <ul className={`${Style.flRW} ml-4`} >
                             {sause.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
-                                    props.onClick();
-                                    props.setContent(<IngredientDetails ingridient={item} />)
+                                    setCurrentItem(item);
                                 }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
@@ -63,8 +69,7 @@ export default function BurgerIngredients(props) {
                         <ul className={`${Style.flRW} ml-4`} >
                             {main.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
-                                    props.onClick();
-                                    props.setContent(<IngredientDetails ingridient={item} />)
+                                    setCurrentItem(item);
                                 }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
@@ -83,7 +88,18 @@ export default function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-    ingridients: PropTypes.array,
-    onClick: PropTypes.func,
-    setContent: PropTypes.func
+    ingridients: PropTypes.arrayOf(PropTypes.exact({
+        _id: PropTypes.string,
+        name: PropTypes.string,
+        type: PropTypes.string,
+        proteins: PropTypes.number,
+        fat: PropTypes.number,
+        carbohydrates: PropTypes.number,
+        calories: PropTypes.number,
+        price: PropTypes.number,
+        image: PropTypes.string,
+        image_mobile: PropTypes.string,
+        image_large: PropTypes.string,
+        __v: PropTypes.number,
+    })).isRequired
 }
