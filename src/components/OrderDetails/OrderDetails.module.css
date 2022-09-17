@@ -1,0 +1,30 @@
+.detailContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 120px 0;
+}
+
+.orderId {
+    text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+    margin-bottom: 32px;
+}
+
+.idTitle {
+    margin-bottom: 60px;
+}
+
+.doneImage {
+    margin-bottom: 60px;
+    height: 120px;
+    width: 120px;
+}
+
+.orderReady {
+    margin-bottom: 8px;
+}
+
+.orderWait {
+    color: #8585AD;
+}
