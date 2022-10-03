@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import  { useContext, useState } from 'react';
 import Style from './BurgerIngredients.module.css';
 import { CurrencyIcon, Tab, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
+import { IngridientsContext } from '../../utils/IngridientsContext';
 
-export default function BurgerIngredients(props) {
+export default function BurgerIngredients() {
+    const ingridients = useContext(IngridientsContext);
     const [current, setCurrent] = useState("bread");
-    const { ingridients } = props;
     const [currentItem, setCurrentItem] = useState();
     const buns = ingridients.filter(item => item.type === "bun");
     const sause = ingridients.filter(item => item.type === "sauce");
@@ -85,21 +85,4 @@ export default function BurgerIngredients(props) {
             </div>
         </>
     )
-}
-
-BurgerIngredients.propTypes = {
-    ingridients: PropTypes.arrayOf(PropTypes.exact({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number,
-    })).isRequired
 }

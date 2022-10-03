@@ -3,25 +3,30 @@ import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import React, { useEffect, useState } from 'react';
-import Modal from '../Modal/Modal';
 import { getIngredients } from '../../utils/burger-api';
+import { IngridientsContext } from '../../utils/IngridientsContext';
+import { CardContext } from '../../utils/CartContext';
 
 function App() {
-  const [ingridients, setIngridients] = React.useState([]);
-  const [visible, SetVisible] = React.useState(false);
-  const [content, SetContent] = React.useState();
-
+  const [ingridients, setIngridients] = useState([]);
+  const [cart, setCard] = useState();
   useEffect(() => {
-    getIngredients().then(data => setIngridients(data.data));
-
-  }, [visible]);
+    getIngredients().then(res => {
+      setCard([res.data[0], res.data[5]]);
+      setIngridients(res.data);
+    });
+  }, []);
 
   return (
     <main className="App">
       <AppHeader />
       <div className={"Content"}>
-        <BurgerIngredients ingridients={ingridients} />
-        <BurgerConstructor ingridients={ingridients} />
+        <IngridientsContext.Provider value={ingridients}>
+          <CardContext.Provider value={cart}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </CardContext.Provider>
+        </IngridientsContext.Provider>
       </div>
     </main>
   );

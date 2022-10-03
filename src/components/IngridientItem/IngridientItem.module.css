@@ -1,0 +1,11 @@
+.ingridient {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.dragble {
+    height: 24px;
+    width: 24px;
+}
