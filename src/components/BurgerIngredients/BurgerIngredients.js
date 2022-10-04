@@ -1,9 +1,10 @@
-import  { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Style from './BurgerIngredients.module.css';
 import { CurrencyIcon, Tab, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import Modal from '../Modal/Modal';
 import { IngridientsContext } from '../../utils/IngridientsContext';
+import { Ingridient } from '../../utils/types';
 
 export default function BurgerIngredients() {
     const ingridients = useContext(IngridientsContext);
@@ -35,7 +36,7 @@ export default function BurgerIngredients() {
                         <ul className={`${Style.flRW} ml-4`} >
                             {buns.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
-                                    setCurrentItem(item);
+                                    setCurrentItem(new Ingridient(item));
                                 }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
@@ -52,7 +53,7 @@ export default function BurgerIngredients() {
                         <ul className={`${Style.flRW} ml-4`} >
                             {sause.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
-                                    setCurrentItem(item);
+                                    setCurrentItem(new Ingridient(item));
                                 }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
@@ -69,7 +70,7 @@ export default function BurgerIngredients() {
                         <ul className={`${Style.flRW} ml-4`} >
                             {main.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
-                                    setCurrentItem(item);
+                                    setCurrentItem(new Ingridient(item));
                                 }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>

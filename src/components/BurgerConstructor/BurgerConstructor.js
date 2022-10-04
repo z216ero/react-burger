@@ -7,6 +7,7 @@ import { CardContext } from '../../utils/CartContext';
 import IngridientItem from '../IngridientItem/IngridientItem';
 import BunItem from '../BunItem/BunItem';
 import { createOrder } from '../../utils/burger-api';
+import { Ingridient } from '../../utils/types';
 
 const initValue = 0;
 
@@ -41,27 +42,27 @@ export default function BurgerConstructor() {
         <ul className={Style.ingridients}>
           {cart && cart.length > 0 &&
             <>
-              <BunItem type={'top'} bun={cart.find((el) => el.type === 'bun')}></BunItem>
+              <BunItem type={'top'} bun={new Ingridient(cart.find((el) => el.type === 'bun'))}></BunItem>
               {cart.map((item) => {
                 if (item.type !== 'bun') {
-                  return (<IngridientItem key={item._id} ingridient={item} />);
+                  return (<IngridientItem key={item._id} ingridient={new Ingridient(item)} />);
                 }
               })}
-              <BunItem type={'bottom'} bun={cart.find((el) => el.type === 'bun')}></BunItem>
+              <BunItem type={'bottom'} bun={new Ingridient(cart.find((el) => el.type === 'bun'))}></BunItem>
             </>
           }
         </ul>
         <div className={`${Style.orderContainer} mt-10`}>
           <div className={Style.totalPrice}>
             <p className="text text_type_digits-medium">{totalPrice}</p>
-            <CurrencyIcon type="primary" style={{ heith: '33px', withd: '33px' }} />
+            <CurrencyIcon type="primary" />
           </div>
           <Button type="primary" size="large" onClick={() => {
             const ids = cart.map(el => el._id);
             createOrder(ids).then(res => {
               setOrderId(res.order.number);
               setVisible(true);
-            })
+            }).catch((err) => console.log(err));
           }}>
             Оформить заказ
           </Button>

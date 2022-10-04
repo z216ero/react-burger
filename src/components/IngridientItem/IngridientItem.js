@@ -1,6 +1,8 @@
 import React from 'react'
 import { ConstructorElement, DragIcon, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Style from './IngridientItem.module.css';
+import { Ingridient } from '../../utils/types';
+import PropTypes from 'prop-types';
 
 export default function IngridientItem(props) {
     const { ingridient } = props;
@@ -14,4 +16,8 @@ export default function IngridientItem(props) {
             />
         </li>
     );
+}
+
+IngridientItem.propTypes = {
+    ingridient: PropTypes.instanceOf(Ingridient).isRequired
 }
