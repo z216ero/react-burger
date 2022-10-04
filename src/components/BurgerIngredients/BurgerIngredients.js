@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useRef, createRef } from 'react';
 import Style from './BurgerIngredients.module.css';
 import { CurrencyIcon, Tab, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
@@ -10,12 +10,32 @@ export default function BurgerIngredients() {
     const ingridients = useContext(IngridientsContext);
     const [current, setCurrent] = useState("bread");
     const [currentItem, setCurrentItem] = useState();
+
     const buns = ingridients.filter(item => item.type === "bun");
     const sause = ingridients.filter(item => item.type === "sauce");
     const main = ingridients.filter(item => item.type === "main");
 
+    const bunElement = useRef(null);
+    const sauseElement = useRef(null);
+    const mainElement = useRef(null);
+
     const Close = () => {
         setCurrentItem(null);
+    }
+
+    const scroll = (value) => {
+        switch (value) {
+            case "bread":
+                bunElement.current.scrollIntoView({ behavior: "smooth" });
+                break;
+            case "souse":
+                sauseElement.current.scrollIntoView({ behavior: "smooth" });
+                break;
+            case "topping":
+                mainElement.current.scrollIntoView({ behavior: "smooth" });
+                break;
+        }
+        setCurrent(value);
     }
 
     return (
@@ -25,14 +45,14 @@ export default function BurgerIngredients() {
                 <p className={`${Style.title} mt-10 mb-5`}>Соберите бургер</p>
                 <nav className={"mb-10"} >
                     <ul className={`${Style.flR}`}>
-                        <li><Tab active={current === "bread"} onClick={setCurrent} value={"bread"}>Булки</Tab> </li>
-                        <li><Tab active={current === "souse"} onClick={setCurrent} value={"souse"}>Соусы</Tab> </li>
-                        <li><Tab active={current === "topping"} onClick={setCurrent} value={"topping"}>Начинки</Tab> </li>
+                        <li><Tab active={current === "bread"} onClick={scroll} value={"bread"}>Булки</Tab> </li>
+                        <li><Tab active={current === "souse"} ref={sauseElement} onClick={scroll} value={"souse"}>Соусы</Tab> </li>
+                        <li><Tab active={current === "topping"} ref={mainElement} onClick={scroll} value={"topping"}>Начинки</Tab> </li>
                     </ul>
                 </nav>
                 <ul className={Style.ingridientsCards}>
                     <li className={Style.ingridientCategory}>
-                        <p className={`${Style.ingridientCategoryName}  mb-6`}>Булки</p>
+                        <p ref={bunElement} className={`${Style.ingridientCategoryName}  mb-6`}>Булки</p>
                         <ul className={`${Style.flRW} ml-4`} >
                             {buns.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
@@ -49,7 +69,7 @@ export default function BurgerIngredients() {
                         </ul>
                     </li>
                     <li className={Style.ingridientCategory}>
-                        <p className={`${Style.ingridientCategoryName}  mb-6`}>Соусы</p>
+                        <p ref={sauseElement} className={`${Style.ingridientCategoryName}  mb-6`}>Соусы</p>
                         <ul className={`${Style.flRW} ml-4`} >
                             {sause.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
@@ -66,7 +86,7 @@ export default function BurgerIngredients() {
                         </ul>
                     </li>
                     <li className={Style.ingridientCategory}>
-                        <p className={`${Style.ingridientCategoryName}  mb-6`}>Начинки</p>
+                        <p ref={mainElement} className={`${Style.ingridientCategoryName}  mb-6`}>Начинки</p>
                         <ul className={`${Style.flRW} ml-4`} >
                             {main.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
