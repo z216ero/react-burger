@@ -1,20 +1,41 @@
-import React, { useState } from 'react';
+import { useContext, useState, useEffect, useRef, createRef } from 'react';
 import Style from './BurgerIngredients.module.css';
 import { CurrencyIcon, Tab, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
+import { IngridientsContext } from '../../utils/IngridientsContext';
+import { Ingridient } from '../../utils/types';
 
-export default function BurgerIngredients(props) {
+export default function BurgerIngredients() {
+    const ingridients = useContext(IngridientsContext);
     const [current, setCurrent] = useState("bread");
-    const { ingridients } = props;
     const [currentItem, setCurrentItem] = useState();
+
     const buns = ingridients.filter(item => item.type === "bun");
     const sause = ingridients.filter(item => item.type === "sauce");
     const main = ingridients.filter(item => item.type === "main");
 
+    const bunElement = useRef(null);
+    const sauseElement = useRef(null);
+    const mainElement = useRef(null);
+
     const Close = () => {
         setCurrentItem(null);
+    }
+
+    const scroll = (value) => {
+        switch (value) {
+            case "bread":
+                bunElement.current.scrollIntoView({ behavior: "smooth" });
+                break;
+            case "souse":
+                sauseElement.current.scrollIntoView({ behavior: "smooth" });
+                break;
+            case "topping":
+                mainElement.current.scrollIntoView({ behavior: "smooth" });
+                break;
+        }
+        setCurrent(value);
     }
 
     return (
@@ -24,18 +45,18 @@ export default function BurgerIngredients(props) {
                 <p className={`${Style.title} mt-10 mb-5`}>Соберите бургер</p>
                 <nav className={"mb-10"} >
                     <ul className={`${Style.flR}`}>
-                        <li><Tab active={current === "bread"} onClick={setCurrent} value={"bread"}>Булки</Tab> </li>
-                        <li><Tab active={current === "souse"} onClick={setCurrent} value={"souse"}>Соусы</Tab> </li>
-                        <li><Tab active={current === "topping"} onClick={setCurrent} value={"topping"}>Начинки</Tab> </li>
+                        <li><Tab active={current === "bread"} onClick={scroll} value={"bread"}>Булки</Tab> </li>
+                        <li><Tab active={current === "souse"} ref={sauseElement} onClick={scroll} value={"souse"}>Соусы</Tab> </li>
+                        <li><Tab active={current === "topping"} ref={mainElement} onClick={scroll} value={"topping"}>Начинки</Tab> </li>
                     </ul>
                 </nav>
                 <ul className={Style.ingridientsCards}>
                     <li className={Style.ingridientCategory}>
-                        <p className={`${Style.ingridientCategoryName}  mb-6`}>Булки</p>
+                        <p ref={bunElement} className={`${Style.ingridientCategoryName}  mb-6`}>Булки</p>
                         <ul className={`${Style.flRW} ml-4`} >
                             {buns.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
-                                    setCurrentItem(item);
+                                    setCurrentItem(new Ingridient(item));
                                 }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
@@ -48,11 +69,11 @@ export default function BurgerIngredients(props) {
                         </ul>
                     </li>
                     <li className={Style.ingridientCategory}>
-                        <p className={`${Style.ingridientCategoryName}  mb-6`}>Соусы</p>
+                        <p ref={sauseElement} className={`${Style.ingridientCategoryName}  mb-6`}>Соусы</p>
                         <ul className={`${Style.flRW} ml-4`} >
                             {sause.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
-                                    setCurrentItem(item);
+                                    setCurrentItem(new Ingridient(item));
                                 }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
@@ -65,11 +86,11 @@ export default function BurgerIngredients(props) {
                         </ul>
                     </li>
                     <li className={Style.ingridientCategory}>
-                        <p className={`${Style.ingridientCategoryName}  mb-6`}>Начинки</p>
+                        <p ref={mainElement} className={`${Style.ingridientCategoryName}  mb-6`}>Начинки</p>
                         <ul className={`${Style.flRW} ml-4`} >
                             {main.map((item) => {
                                 return (<li key={item._id} className={Style.ingridientCard} onClick={() => {
-                                    setCurrentItem(item);
+                                    setCurrentItem(new Ingridient(item));
                                 }}>
                                     <div className={Style.Count}>
                                         <Counter count={1}></Counter>
@@ -85,21 +106,4 @@ export default function BurgerIngredients(props) {
             </div>
         </>
     )
-}
-
-BurgerIngredients.propTypes = {
-    ingridients: PropTypes.arrayOf(PropTypes.exact({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number,
-    })).isRequired
 }

@@ -3,7 +3,7 @@ import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-dev
 
 export default function AppHeader() {
     return (
-        <>
+        <header>
             <nav className={`${HeaderStyle.header} mt-10`}>
                 <ul className={HeaderStyle.menu}>
                     <div className={HeaderStyle.item}>
@@ -14,6 +14,6 @@ export default function AppHeader() {
                     <li className={`${HeaderStyle.item} ${HeaderStyle.purple}`}><ProfileIcon type="secondary" />Личный кабинет</li>
                 </ul>
             </nav >
-        </>
+        </header>
     )
 }

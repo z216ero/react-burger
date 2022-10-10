@@ -1,98 +1,68 @@
 import Style from './BurgerConstructor.module.css';
-import React, { useState } from 'react';
-import { Button, ConstructorElement, DragIcon, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
+import { CardContext } from '../../utils/CartContext';
+import IngridientItem from '../IngridientItem/IngridientItem';
+import BunItem from '../BunItem/BunItem';
+import { createOrder } from '../../utils/burger-api';
+import { Ingridient } from '../../utils/types';
 
-export default function BurgerConstructor(props) {
-  const { ingridients } = props;
+const initValue = 0;
+
+const getTotalPrice = (state, cart) => {
+  if (!cart) return;
+  state = cart.reduce((prev, curr) => {
+    if (curr.type === "bun") {
+      return prev + curr.price * 2;
+    }
+    else {
+      return prev + curr.price;
+    }
+
+  }, 0);
+  return state;
+}
+
+export default function BurgerConstructor() {
+  const cart = useContext(CardContext);
   const [visible, setVisible] = useState(false);
+  const [totalPrice, reducer] = React.useReducer(getTotalPrice, initValue);
+  const [orderId, setOrderId] = useState(0);
   const Close = () => {
     setVisible(false);
   }
 
+  useEffect(() => reducer(cart), [cart]);
+
   return (
-    <>{visible && (<Modal onClose={Close} children={<OrderDetails />} />)}
+    <>{visible && (<Modal onClose={Close} children={<OrderDetails orderId={orderId} />} />)}
       <div className={`${Style.burgerConstructor} mt-25`} >
-        {ingridients.length > 0 && <ul className={Style.ingridients}>
-          <li className={Style.ingridient}>
-            <div className={Style.dragble}></div>
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text="Краторная булка N-200i (верх)"
-              price={20}
-              thumbnail={ingridients[0].image}
-            />
-          </li>
-          <li className={Style.ingridient}>
-            <div className={Style.dragble}>
-              <DragIcon type="primary" />
-            </div>
-            <ConstructorElement
-              text="Соус традиционный галактический"
-              price={30}
-              thumbnail={ingridients[0].image}
-            />
-          </li>
-          <li className={Style.ingridient}>
-            <div className={Style.dragble}>
-              <DragIcon type="primary" />
-            </div>
-            <ConstructorElement
-              text="Мясо бессмертных моллюсков Protostomia"
-              price={300}
-              thumbnail={ingridients[0].image}
-            />
-          </li>
-          <li className={Style.ingridient}>
-            <div className={Style.dragble}>
-              <DragIcon type="primary" />
-            </div>
-            <ConstructorElement
-              text="Плоды Фалленианского дерева"
-              price={80}
-              thumbnail={ingridients[0].image}
-            />
-          </li>
-          <li className={Style.ingridient}>
-            <div className={Style.dragble}>
-              <DragIcon type="primary" />
-            </div>
-            <ConstructorElement
-              text="Хрустящие минеральные кольца"
-              price={80}
-              thumbnail={ingridients[0].image}
-            />
-          </li>
-          <li className={Style.ingridient}>
-            <div className={Style.dragble}>
-              <DragIcon type="primary" />
-            </div>
-            <ConstructorElement
-              text="Хрустящие минеральные кольца"
-              price={80}
-              thumbnail={ingridients[0].image}
-            />
-          </li>
-          <li className={Style.ingridient}>
-            <div className={Style.dragble}></div>
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text="Краторная булка N-200i (низ)"
-              price={200}
-              thumbnail={ingridients[0].image}
-            />
-          </li>
-        </ul>}
+        <ul className={Style.ingridients}>
+          {cart && cart.length > 0 &&
+            <>
+              <BunItem type={'top'} bun={new Ingridient(cart.find((el) => el.type === 'bun'))}></BunItem>
+              {cart.map((item) => {
+                if (item.type !== 'bun') {
+                  return (<IngridientItem key={item._id} ingridient={new Ingridient(item)} />);
+                }
+              })}
+              <BunItem type={'bottom'} bun={new Ingridient(cart.find((el) => el.type === 'bun'))}></BunItem>
+            </>
+          }
+        </ul>
         <div className={`${Style.orderContainer} mt-10`}>
           <div className={Style.totalPrice}>
-            <p className="text text_type_digits-medium">610</p>
-            <CurrencyIcon type="primary" style={{ heith: '33px', withd: '33px' }} /></div>
+            <p className="text text_type_digits-medium">{totalPrice}</p>
+            <CurrencyIcon type="primary" />
+          </div>
           <Button type="primary" size="large" onClick={() => {
-            setVisible(true);
+            const ids = cart.map(el => el._id);
+            createOrder(ids).then(res => {
+              setOrderId(res.order.number);
+              setVisible(true);
+            }).catch((err) => console.log(err));
           }}>
             Оформить заказ
           </Button>
@@ -100,21 +70,4 @@ export default function BurgerConstructor(props) {
       </div>
     </>
   );
-}
-
-BurgerConstructor.propTypes = {
-  ingridients: PropTypes.arrayOf(PropTypes.exact({
-    _id: PropTypes.string,
-    name: PropTypes.string,
-    type: PropTypes.string,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-    calories: PropTypes.number,
-    price: PropTypes.number,
-    image: PropTypes.string,
-    image_mobile: PropTypes.string,
-    image_large: PropTypes.string,
-    __v: PropTypes.number,
-  })).isRequired
 }
